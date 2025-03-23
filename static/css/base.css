@@ -1,0 +1,96 @@
+html {
+    height: 100%;
+}
+body {
+    font-family: 'Poiret One', sans-serif;
+    color: #727272;
+    height: calc(100vh - 164px);    
+}
+/* from Bulma */
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+.logo-font {
+}
+.main-logo-link {
+    width: fit-content;
+}
+.shop-button {
+    background: #727272;
+    color: white;
+    min-width: 100%;
+}
+.btn-main {
+    background: #727272;
+    color: white;
+}
+.shop-button:hover,
+.shop-button:active,
+.shop-button:focus,
+.btn-main:hover,
+.btn-main:active,
+.btn-main:focus {
+    background: #222;
+    color: white;
+}
+.text-main {
+    color: #727272 !important;
+}
+.border-black {
+    border: 1px solid black !important;
+}
+.img-card {
+    width: 100px;                
+    height: 100px;
+    object-fit: contain;
+}
+
+.card-img-top {
+    max-height: 250px;          /* Limit the maximum height of the image */
+    object-fit: contain;        /* Ensures no stretching */
+}
+/* -------------------------------- Media Queries */
+/* Slightly larger container on xl screens */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 80%;
+    }
+    .header-container {
+        padding-top: 164px;
+    }
+    #blurb {
+        font-size: clamp(40px, 8vw, 100px); /* Responsive scaling */
+    }
+}
+/* Fixed top navbar only on medium and up */
+@media (min-width: 992px) {
+    .fixed-top-desktop-only {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+    .header-container {
+        padding-top: 164px;
+    }
+    #blurb {
+        font-size: clamp(32px, 6vw, 80px); /* Adjusted for mid-sized screens */
+    }
+}
+/* Small screens (phones, etc.) */
+@media (min-width: 320px) {
+    #blurb {
+        font-size: clamp(24px, 5vw, 60px); /* Prevents text from being too small or too big */
+    }
+    #logo {
+        font-size: 250%;
+    }
+    .header-container {
+        padding-top: 185px;
+    }
+}
