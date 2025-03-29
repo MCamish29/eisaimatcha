@@ -3,7 +3,22 @@
 {% block page_header %}
     <div class="container header-container">
         <div class="row">
-            <div class="col"></div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 d-flex">
+                        <a href="{% url 'products' %}?category=Tea" class="btn-lg rounded py-3 shop-button w-100 text-center">Tea</a>
+                    </div>
+                    <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 d-flex">
+                        <a href="{% url 'products' %}?category=Equipment" class="btn-lg rounded py-3 shop-button w-100 text-center">Equipment</a>
+                    </div>
+                    <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 d-flex">
+                        <a href="{% url 'products' %}?category=Kits" class="btn-lg rounded py-3 shop-button w-100 text-center">Kits</a>
+                    </div>
+                    <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 d-flex">
+                        <a href="{% url 'products' %}" class="btn-lg rounded py-3 shop-button w-100 text-center">Shop All</a>
+                    </div>    
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
