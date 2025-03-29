@@ -1,43 +1,38 @@
 <script type="text/javascript">
-   // Disable +/- buttons outside 1-99 range
-   function handleEnableDisable(itemId) {
-       var currentValue = parseInt($(`#id_qty_${itemId}`).val());
-       var minusDisabled = currentValue < 2;
-       var plusDisabled = currentValue > 98;
-       $(`#decrement-qty_${itemId}`).prop('disabled', minusDisabled);
-       $(`#increment-qty_${itemId}`).prop('disabled', plusDisabled);
-   }
-
-   // Ensure proper enabling/disabling of all inputs on page load
-   var allQtyInputs = $('.qty_input');
-   for(var i = 0; i < allQtyInputs.length; i++){
-       var itemId = $(allQtyInputs[i]).data('item_id');
-       handleEnableDisable(itemId);
-   }
-
-   // Check enable/disable every time the input is changed
-   $('.qty_input').change(function() {
+    // Disable +/- buttons outside 1-99 range
+    function handleEnableDisable(itemId) {
+        var currentValue = parseInt($(`#id_qty_${itemId}`).val());
+        var minusDisabled = currentValue < 2;
+        var plusDisabled = currentValue > 98;
+        $(`#decrement-qty_${itemId}`).prop('disabled', minusDisabled);
+        $(`#increment-qty_${itemId}`).prop('disabled', plusDisabled);
+    }
+ 
+    // Ensure proper enabling/disabling of all inputs on page load
+    var allQtyInputs = $('.qty_input');
+    for (var i = 0; i < allQtyInputs.length; i++) {
+        var itemId = $(allQtyInputs[i]).data('item_id');
+        handleEnableDisable(itemId);
+    }
+ 
+    // Increment quantity with event delegation
+    $(document).on('click', '.increment-qty', function(e) {
+       e.preventDefault();  // Prevent default form submission behavior
        var itemId = $(this).data('item_id');
-       handleEnableDisable(itemId);
-   });
-
-   // Increment quantity with event delegation
-   $(document).on('click', '.increment-qty', function(e) {
-      e.preventDefault();
-      var itemId = $(this).data('item_id');
-      var closestInput = $(this).closest('.input-group').find('.qty_input'); // Fix this line to target the correct input
-      var currentValue = parseInt(closestInput.val()) || 1;
-      closestInput.val(currentValue + 1);
-      handleEnableDisable(itemId);
-   });
-   
-   // Decrement quantity with event delegation
-   $(document).on('click', '.decrement-qty', function(e) {
-      e.preventDefault();
-      var itemId = $(this).data('item_id');
-      var closestInput = $(this).closest('.input-group').find('.qty_input'); // Fix this line to target the correct input
-      var currentValue = parseInt(closestInput.val()) || 1;
-      closestInput.val(Math.max(1, currentValue - 1)); // Prevent values below 1
-      handleEnableDisable(itemId);
-   });
-</script>
+       var closestInput = $(this).closest('.input-group').find('.qty_input');
+       var currentValue = parseInt(closestInput.val()) || 1;
+       closestInput.val(currentValue + 1);  // Increment by 1
+       handleEnableDisable(itemId);  // Re-enable/disable buttons based on the new value
+    });
+    
+    // Decrement quantity with event delegation
+    $(document).on('click', '.decrement-qty', function(e) {
+       e.preventDefault();  // Prevent default form submission behavior
+       var itemId = $(this).data('item_id');
+       var closestInput = $(this).closest('.input-group').find('.qty_input');
+       var currentValue = parseInt(closestInput.val()) || 1;
+       closestInput.val(Math.max(1, currentValue - 1));  // Decrement by 1 but not below 1
+       handleEnableDisable(itemId);  // Re-enable/disable buttons based on the new value
+    });
+ </script>
+ 
