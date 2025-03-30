@@ -10,7 +10,7 @@ class OrderForm(forms.ModelForm):
                   'town_or_city', 'postcode', 'county', 
                   'country',)
         
-     def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Add placeholders and classes, remove auto-generated
         labels and set autofocus on first field
