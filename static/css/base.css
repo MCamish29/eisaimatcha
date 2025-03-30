@@ -3,9 +3,9 @@ html {
 }
 body {
     font-family: 'Poiret One', sans-serif;
-    color: #727272;
     height: calc(100vh - 164px);    
 }
+
 /* from Bulma */
 .icon {
     align-items: center;
