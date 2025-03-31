@@ -10,16 +10,18 @@
     <div class="toast-body bg-white">
         {{ message }}
     </div>
-    <div class="row">
-        <div class="col">            
-            {% if request.session.bag %}
-                <a href="{% url 'view_bag' %}" id="checkoutButton" class="btn shop-button btn-block rounded-0">
-                    <span class="text-uppercase">Go To Secure Checkout</span>
-                    <span class="icon">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                </a>
-            {% endif %}
+    {% if not on_profile_page %}  {# This ensures the checkout button is hidden on the profile page #}
+        <div class="row">
+            <div class="col">            
+                {% if request.session.bag %}
+                    <a href="{% url 'view_bag' %}" id="checkoutButton" class="btn shop-button btn-block rounded-0">
+                        <span class="text-uppercase">Go To Secure Checkout</span>
+                        <span class="icon">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </a>
+                {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 </div>
