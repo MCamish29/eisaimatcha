@@ -13,6 +13,9 @@ class Category(models.Model):
     
     def __str__(self):
         return self.category 
+    
+    def get_friendly_name(self):
+        return self.category
 
 
 class Country(models.Model):
@@ -36,7 +39,7 @@ class Tea(models.Model):
     internal_name = models.CharField(max_length=250)
     product_name = models.CharField(max_length=250, null=True, blank=True)
     description = models.TextField()
-    blend = models.TextField()
+    blend = models.CharField(max_length=250, null=True, blank=True)
     weight = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     country_of_origin = models.ForeignKey(Country, on_delete=models.CASCADE)

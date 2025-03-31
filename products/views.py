@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
-from .models import Tea, Equipment, Kit
+from .models import Tea, Equipment, Kit, Category
+from .forms import ProductForm
+
 
 def all_products(request):
     """A view to return all products page with category and search filters"""
@@ -51,3 +53,36 @@ def all_products(request):
     }
     
     return render(request, 'products/products.html', context)
+
+
+
+def add_product(request):
+    """ Add a product to the store """
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Determine the product type by the category
+            category = form.cleaned_data['category']
+            
+            # Create the corresponding product type based on the selected category
+            if category.category.lower() == 'tea':  # Use 'category' field instead of 'name'
+                Tea.objects.create(**form.cleaned_data)
+                messages.success(request, 'Successfully added tea product!')
+            elif category.category.lower() == 'equipment':  # Use 'category' field instead of 'name'
+                Equipment.objects.create(**form.cleaned_data)
+                messages.success(request, 'Successfully added equipment product!')
+            elif category.category.lower() == 'kit':  # Use 'category' field instead of 'name'
+                Kit.objects.create(**form.cleaned_data)
+                messages.success(request, 'Successfully added kit product!')
+            return redirect(reverse('add_product'))
+        else:
+            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
+    else:
+        form = ProductForm()
+
+    template = 'products/add_products.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
