@@ -4,7 +4,7 @@ import json
 import time
 from .models import Order, OrderLineItem
 from products.models import Tea, Equipment, Kit
-
+from profiles.models import UserProfile
 
 class StripeWH_Handler:
     """Handle Stripe Webhooks"""
@@ -56,6 +56,21 @@ class StripeWH_Handler:
             for field, value in shipping_details.address.items():
                 if value == "":
                     shipping_details.address[field] = None
+
+         # Update profile information if save_info was checked
+        profile = None
+        username = intent.metadata.username
+        if username != 'AnonymousUser':
+            profile = UserProfile.objects.get(user__username=username)
+            if save_info:
+                profile.default_phone_number = shipping_details.phone                
+                profile.default_street_address1 = shipping_details.address.line1
+                profile.default_street_address2 = shipping_details.address.line2
+                profile.default_town_or_city = shipping_details.address.city
+                profile.default_county = shipping_details.address.state
+                profile.default_country = shipping_details.address.country
+                profile.default_postcode = shipping_details.address.postal_code
+                profile.save()
 
         # Check if order already exists
         order_exists = False
