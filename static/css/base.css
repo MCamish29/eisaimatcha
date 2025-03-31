@@ -19,11 +19,19 @@ body {
 .main-logo-link {
     width: fit-content;
 }
+
+.action-button{
+    background: #727272;
+    color: white;
+    min-width: 10%;
+}
+
 .shop-button {
     background: #727272;
     color: white;
     min-width: 100%;
 }
+
 .btn-main {
     background: #727272;
     color: white;
