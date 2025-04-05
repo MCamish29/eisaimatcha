@@ -113,6 +113,10 @@
                                     <input type="hidden" name="redirect_url" value="{{ request.path }}">
                                 </div>
                             </form>
+                            {% if user.is_superuser %}
+                                <a href="{% url 'edit_product' product.product_id %}" class="btn btn-primary my-2">Edit</a>
+                                <a href="{% url 'delete_product' product.product_id %}" class="btn btn-danger">Delete</a>
+                            {% endif %}
                         </div>
                     </div>                    
                     {% if forloop.counter|divisibleby:1 %}

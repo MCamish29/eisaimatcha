@@ -9,7 +9,7 @@ class ProductForm(forms.Form):
     weight = forms.IntegerField(required=False)
     category = forms.ModelChoiceField(queryset=Category.objects.all())
     country_of_origin = forms.ModelChoiceField(queryset=Country.objects.all())
-    image = forms.ImageField()
+    image = forms.ImageField(required=False)
     price = forms.DecimalField(max_digits=10, decimal_places=2)
 
     def __init__(self, *args, **kwargs):

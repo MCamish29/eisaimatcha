@@ -103,3 +103,117 @@ def add_product(request):
     }
 
     return render(request, template, context)
+
+def edit_product(request, product_id):
+    """A view to edit a product."""
+    
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        messages.error(request, "You are not authorized to edit this product.")
+        return redirect('products')
+    
+    # Try to find the product in the different models
+    product = None
+    product_type = None
+    if Tea.objects.filter(product_id=product_id).exists():
+        product = get_object_or_404(Tea, product_id=product_id)
+        product_type = 'Tea'
+    elif Equipment.objects.filter(product_id=product_id).exists():
+        product = get_object_or_404(Equipment, product_id=product_id)
+        product_type = 'Equipment'
+    elif Kit.objects.filter(product_id=product_id).exists():
+        product = get_object_or_404(Kit, product_id=product_id)
+        product_type = 'Kit'
+    
+    # If no product was found in any model, redirect with an error message
+    if not product:
+        messages.error(request, "Product not found.")
+        return redirect('products')
+
+    # Check if the form is submitted and valid
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Manually update the model with the form data based on product type
+            product.internal_name = form.cleaned_data['internal_name']
+            product.product_name = form.cleaned_data['product_name']
+            product.description = form.cleaned_data['description']
+
+            # Only update 'blend' if the product is of type 'Tea'
+            if product_type == 'Tea':
+                product.blend = form.cleaned_data['blend']
+                product.weight = form.cleaned_data['weight']  # Only for Tea products
+            elif product_type == 'Equipment':
+                # Equipment does not have 'blend' or 'weight', skip those fields
+                pass
+            elif product_type == 'Kit':
+                # Handle Kit-specific fields if any
+                pass
+
+            product.category = form.cleaned_data['category']
+            product.country_of_origin = form.cleaned_data['country_of_origin']
+            product.price = form.cleaned_data['price']
+
+            # If a new image is uploaded, update the image field
+            if 'image' in request.FILES:
+                product.image = form.cleaned_data['image']
+            # If no new image is uploaded, keep the existing image
+            else:
+                product.image = product.image  # No change to the image
+
+            # Save the changes to the appropriate model
+            product.save()
+            messages.success(request, 'Product successfully updated!')
+            return redirect('products')
+        else:
+            print(form.errors)
+            messages.error(request, 'Failed to update product. Please check the form for errors.')
+    else:
+        # Load the form with the current product data
+        initial_data = {
+            'internal_name': product.internal_name,
+            'product_name': product.product_name,
+            'description': product.description,
+            'blend': product.blend if product_type == 'Tea' else '',  # Only load 'blend' for Tea
+            'weight': product.weight if product_type == 'Tea' else '',  # Only load 'weight' for Tea
+            'category': product.category,
+            'country_of_origin': product.country_of_origin,
+            'image': product.image,  # This will display the current image
+            'price': product.price,
+        }
+        form = ProductForm(initial=initial_data)
+
+    # Render the edit product template
+    context = {
+        'form': form,
+        'product': product,
+        'product_type': product_type  # Pass the product type to handle specific cases in the template
+    }
+    return render(request, 'products/edit_products.html', context)
+
+def delete_product(request, product_id):
+    """A view to delete a product."""
+    
+    # Check if the user is a superuser
+    if not request.user.is_superuser:
+        messages.error(request, "You are not authorized to delete this product.")
+        return redirect('products')
+    
+    # Try to find the product in the different models
+    product = None
+    if Tea.objects.filter(product_id=product_id).exists():
+        product = get_object_or_404(Tea, product_id=product_id)
+    elif Equipment.objects.filter(product_id=product_id).exists():
+        product = get_object_or_404(Equipment, product_id=product_id)
+    elif Kit.objects.filter(product_id=product_id).exists():
+        product = get_object_or_404(Kit, product_id=product_id)
+    
+    if product:
+        # Delete the product
+        product.delete()
+        messages.success(request, 'Product successfully deleted!')
+    else:
+        messages.error(request, 'Product not found!')
+    
+    # Redirect to the products page
+    return redirect('products')
