@@ -22,4 +22,4 @@ class ProductForm(forms.Form):
         
         # Add a class to each field for styling purposes
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'border-black rounded-0'
+            field.widget.attrs['class'] = ''

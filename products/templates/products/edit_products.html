@@ -12,21 +12,20 @@
 
 {% block content %}
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-12 col-md-6">
                 <hr>
                 <h2 class="text-main mb-4">Product Management</h2>
                 <h5 class="text-main">Add a Product</h5>
-                <h6 class="text-danger ">*Tea requires a blend and weight</h6>
             </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-6">
-                <form method="POST" enctype="multipart/form-data" action="{% url 'add_product' %}">
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn shop-button">Add Product</button>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
                   </form>
             
             </div>

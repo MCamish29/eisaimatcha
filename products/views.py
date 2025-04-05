@@ -55,25 +55,42 @@ def all_products(request):
     return render(request, 'products/products.html', context)
 
 
-
 def add_product(request):
     """ Add a product to the store """
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            # Determine the product type by the category
             category = form.cleaned_data['category']
-            
-            # Create the corresponding product type based on the selected category
-            if category.category.lower() == 'tea':  # Use 'category' field instead of 'name'
-                Tea.objects.create(**form.cleaned_data)
+            category_name = category.category.lower()
+
+            # Shared fields
+            base_fields = {
+                'internal_name': form.cleaned_data['internal_name'],
+                'product_name': form.cleaned_data['product_name'],
+                'description': form.cleaned_data['description'],
+                'category': category,
+                'country_of_origin': form.cleaned_data.get('country_of_origin'),
+                'image': form.cleaned_data['image'],
+                'price': form.cleaned_data['price'],
+            }
+
+            if category_name == 'tea':
+                Tea.objects.create(
+                    **base_fields,
+                    blend=form.cleaned_data['blend'],
+                    weight=form.cleaned_data['weight'],
+                )
                 messages.success(request, 'Successfully added tea product!')
-            elif category.category.lower() == 'equipment':  # Use 'category' field instead of 'name'
-                Equipment.objects.create(**form.cleaned_data)
+
+            elif category_name == 'equipment':
+                Equipment.objects.create(**base_fields)
                 messages.success(request, 'Successfully added equipment product!')
-            elif category.category.lower() == 'kit':  # Use 'category' field instead of 'name'
-                Kit.objects.create(**form.cleaned_data)
+
+            elif category_name == 'kit':
+                base_fields.pop('country_of_origin', None)  # Kit doesn't have country_of_origin
+                Kit.objects.create(**base_fields)
                 messages.success(request, 'Successfully added kit product!')
+
             return redirect(reverse('add_product'))
         else:
             messages.error(request, 'Failed to add product. Please ensure the form is valid.')
