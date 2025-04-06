@@ -81,9 +81,10 @@ body {
     .container {
         max-width: 80%;
     }
-    .header-container {
-        padding-top: 164px;
+    .header-container{
+        margin-top: 150px;
     }
+}
    
 /* Fixed top navbar only on medium and up */
 @media (min-width: 992px) {
@@ -94,10 +95,10 @@ body {
         left: 0;
         z-index: 1030;
     }
-    .header-container {
-        padding-top: 164px;
+    .header-container{
+        margin-top: 100px;
     }
-   
+
 }
 /* Small screens (phones, etc.) */
 @media (min-width: 320px) {
@@ -105,7 +106,8 @@ body {
     #logo {
         font-size: 250%;
     }
-    .header-container {
-        padding-top: 185px;
+    .header-container{
+        margin-top: 170px;
+        margin-left: 10px;
     }
 }
