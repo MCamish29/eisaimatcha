@@ -23,7 +23,7 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="container h-50">
+    <div class="container h-50" style="background-image: url('/media/media/matcha_banner.jpg'); background-size: cover; background-position: center;">
         <div class="row h-100">
             <div class="col-7 col-md-12 my-auto">
                 <h2 class="logo-font text-main" id="blurb">
@@ -31,12 +31,14 @@
                 </h2>
                 <h3 class="logo-font text-main"> Elevate Your Senses With Matcha </h3>
             </div>
-        </div>        
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 my-3 d-flex">
+                <a href="{% url 'products' %}" class="btn-lg rounded py-3 shop-button w-100 text-center">Start Matcha Journey!</a>
+            </div>
+        </div>             
     </div>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 mb-3 d-flex">
-                <a href="{% url 'products' %}" class="btn-lg rounded py-3 shop-button w-100 text-center">Start Matcha Journey!</a>
-            </div>            
+               
     </div>
 {% endblock %}

@@ -2,7 +2,7 @@ html {
     height: 100%;
 }
 body {
-    font-family: 'Poiret One', sans-serif !important;
+    font-family: 'Quicksand', sans-serif !important;
     height: calc(100vh - 164px);    
 }
 
@@ -14,8 +14,7 @@ body {
     height: 1.5rem;
     width: 1.5rem;
 }
-.logo-font {
-}
+
 .main-logo-link {
     width: fit-content;
 }
