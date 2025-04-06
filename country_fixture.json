@@ -1,0 +1,1 @@
+[{"model": "products.country", "pk": 1, "fields": {"country": "China", "created": "2025-03-23", "updated": "2025-03-23"}}, {"model": "products.country", "pk": 2, "fields": {"country": "Japan", "created": "2025-03-23", "updated": "2025-03-23"}}]

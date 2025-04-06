@@ -1,0 +1,1 @@
+[{"model": "products.category", "pk": 1, "fields": {"category": "Tea", "created": "2025-03-23", "updated": "2025-03-23"}}, {"model": "products.category", "pk": 2, "fields": {"category": "Equipment", "created": "2025-03-23", "updated": "2025-03-23"}}, {"model": "products.category", "pk": 3, "fields": {"category": "Kits", "created": "2025-03-23", "updated": "2025-03-23"}}]
