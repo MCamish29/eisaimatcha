@@ -33,6 +33,7 @@ class Country(models.Model):
 class Tea(models.Model):
     class Meta:
         verbose_name_plural = 'Tea'
+        db_table = 'products_tea'
     
     # Using UUID as a unique identifier across all models
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)    
