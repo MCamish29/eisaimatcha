@@ -69,7 +69,6 @@ def add_product(request):
                 'product_name': form.cleaned_data['product_name'],
                 'description': form.cleaned_data['description'],
                 'category': category,
-                'country_of_origin': form.cleaned_data.get('country_of_origin'),
                 'image': form.cleaned_data['image'],
                 'price': form.cleaned_data['price'],
             }
@@ -79,15 +78,20 @@ def add_product(request):
                     **base_fields,
                     blend=form.cleaned_data['blend'],
                     weight=form.cleaned_data['weight'],
+                    country_of_origin=form.cleaned_data.get('country_of_origin')
                 )
                 messages.success(request, 'Successfully added tea product!')
 
             elif category_name == 'equipment':
-                Equipment.objects.create(**base_fields)
+                Equipment.objects.create(
+                    **base_fields,
+                    country_of_origin=form.cleaned_data.get('country_of_origin')
+                )
                 messages.success(request, 'Successfully added equipment product!')
 
             elif category_name == 'kit':
-                base_fields.pop('country_of_origin', None)  # Kit doesn't have country_of_origin
+                # Kit doesn't have country_of_origin, so exclude it
+                base_fields.pop('country_of_origin', None)  
                 Kit.objects.create(**base_fields)
                 messages.success(request, 'Successfully added kit product!')
 
@@ -151,7 +155,11 @@ def edit_product(request, product_id):
                 pass
 
             product.category = form.cleaned_data['category']
-            product.country_of_origin = form.cleaned_data['country_of_origin']
+            
+            # Only update 'country_of_origin' if it's not a Kit
+            if product_type != 'Kit':
+                product.country_of_origin = form.cleaned_data['country_of_origin']
+            
             product.price = form.cleaned_data['price']
 
             # If a new image is uploaded, update the image field
@@ -177,10 +185,14 @@ def edit_product(request, product_id):
             'blend': product.blend if product_type == 'Tea' else '',  # Only load 'blend' for Tea
             'weight': product.weight if product_type == 'Tea' else '',  # Only load 'weight' for Tea
             'category': product.category,
-            'country_of_origin': product.country_of_origin,
             'image': product.image,  # This will display the current image
             'price': product.price,
         }
+        
+        # Do not include 'country_of_origin' for 'Kit' type products
+        if product_type != 'Kit':
+            initial_data['country_of_origin'] = product.country_of_origin
+        
         form = ProductForm(initial=initial_data)
 
     # Render the edit product template
