@@ -1,11 +1,14 @@
+
 html {
     height: 100%;
 }
 body {
     font-family: 'Quicksand', sans-serif !important;
-    height: calc(100vh - 164px);    
+    height: calc(98vh - 164px);    
 }
-
+.footer{
+    background-color: #727272 !important;
+}
 /* from Bulma */
 .icon {
     align-items: center;
@@ -14,23 +17,19 @@ body {
     height: 1.5rem;
     width: 1.5rem;
 }
-
 .main-logo-link {
     width: fit-content;
 }
-
 .action-button{
     background: #727272;
     color: white;
     min-width: 10%;
 }
-
 .shop-button {
     background: #727272;
     color: white;
     min-width: 100%;
 }
-
 .btn-main {
     background: #727272;
     color: white;
@@ -43,36 +42,43 @@ body {
 .btn-main:focus {
     background: #222;
     color: white;
+    transition: all 0.3s ease;
 }
 .text-main {
     color: #727272 !important;
 }
-.border-black {
-    border: 1px solid black !important;
-}
-
 .update-link,
 .remove-item {
     cursor: pointer;
 }
-
 /* ------------------------------- bootstrap toasts */
-
 .message-container {
     position: fixed;
     top: 72px;
     right: 15px;
     z-index: 99999999999;
 }
-
 .custom-toast {
     overflow: visible;
 }
-
 .toast-capper {
     height: 2px;
 }
-
+.subscribe-button {
+    width: 25%;
+    color: #727272 !important;
+    background-color: white;
+    transition: all 0.3s ease; /* Smooth transition */
+}
+.subscribe-button:hover {
+    background: #222;
+    font-style: white;
+}
+#mc_embed_signup{
+    false;
+    clear:left; 
+    font-family: 'Quicksand', sans-serif !important;
+}
 
 /* -------------------------------- Media Queries */
 /* Slightly larger container on xl screens */
@@ -97,7 +103,6 @@ body {
     .header-container{
         margin-top: 100px;
     }
-
 }
 /* Small screens (phones, etc.) */
 @media (min-width: 320px) {
