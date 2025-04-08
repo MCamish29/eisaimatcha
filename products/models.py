@@ -80,7 +80,6 @@ class Kit(models.Model):
     product_name = models.CharField(max_length=250, null=True, blank=True)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    country_of_origin = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='media/')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     created = models.DateField(auto_now_add=True)
