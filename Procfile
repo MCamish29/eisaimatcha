@@ -1,1 +1,1 @@
-web: gunicorn EISAI_MATCHA.wsgi:application
+web: gunicorn eisai_matcha.wsgi:application
