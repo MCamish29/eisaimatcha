@@ -137,7 +137,6 @@ def edit_product(request, product_id):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            # Manually update the model with the form data based on product type
             product.internal_name = form.cleaned_data['internal_name']
             product.product_name = form.cleaned_data['product_name']
             product.description = form.cleaned_data['description']
