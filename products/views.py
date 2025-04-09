@@ -8,7 +8,7 @@ from .forms import ProductForm
 def all_products(request):
     """A view to return all products page with category and search filters"""
     
-    category_filter = request.GET.get('category', None)  # Get category filter from URL parameters
+    category_filter = request.GET.get('category', None)
     # Fetch all products
     teas = Tea.objects.all()
     equipment = Equipment.objects.all()
@@ -29,7 +29,7 @@ def all_products(request):
         equipment = equipment.filter(queries)
         kits = kits.filter(queries)
     
-    # Apply category filter (if category is passed in the URL)
+    # Apply category filter 
     if category_filter:
         if category_filter.lower() == 'tea':
             teas = teas.all()
@@ -90,7 +90,6 @@ def add_product(request):
                 messages.success(request, 'Successfully added equipment product!')
 
             elif category_name == 'kit':
-                # Kit doesn't have country_of_origin, so exclude it
                 base_fields.pop('country_of_origin', None)  
                 Kit.objects.create(**base_fields)
                 messages.success(request, 'Successfully added kit product!')
@@ -143,20 +142,17 @@ def edit_product(request, product_id):
             product.product_name = form.cleaned_data['product_name']
             product.description = form.cleaned_data['description']
 
-            # Only update 'blend' if the product is of type 'Tea'
+            
             if product_type == 'Tea':
                 product.blend = form.cleaned_data['blend']
-                product.weight = form.cleaned_data['weight']  # Only for Tea products
-            elif product_type == 'Equipment':
-                # Equipment does not have 'blend' or 'weight', skip those fields
+                product.weight = form.cleaned_data['weight'] 
+            elif product_type == 'Equipment':                
                 pass
             elif product_type == 'Kit':
-                # Handle Kit-specific fields if any
                 pass
 
             product.category = form.cleaned_data['category']
-            
-            # Only update 'country_of_origin' if it's not a Kit
+                        
             if product_type != 'Kit':
                 product.country_of_origin = form.cleaned_data['country_of_origin']
             
@@ -167,9 +163,8 @@ def edit_product(request, product_id):
                 product.image = form.cleaned_data['image']
             # If no new image is uploaded, keep the existing image
             else:
-                product.image = product.image  # No change to the image
-
-            # Save the changes to the appropriate model
+                product.image = product.image
+            
             product.save()
             messages.success(request, 'Product successfully updated!')
             return redirect('products')
@@ -182,24 +177,22 @@ def edit_product(request, product_id):
             'internal_name': product.internal_name,
             'product_name': product.product_name,
             'description': product.description,
-            'blend': product.blend if product_type == 'Tea' else '',  # Only load 'blend' for Tea
-            'weight': product.weight if product_type == 'Tea' else '',  # Only load 'weight' for Tea
+            'blend': product.blend if product_type == 'Tea' else '',
+            'weight': product.weight if product_type == 'Tea' else '',
             'category': product.category,
-            'image': product.image,  # This will display the current image
+            'image': product.image, 
             'price': product.price,
-        }
+        }        
         
-        # Do not include 'country_of_origin' for 'Kit' type products
         if product_type != 'Kit':
             initial_data['country_of_origin'] = product.country_of_origin
         
         form = ProductForm(initial=initial_data)
-
-    # Render the edit product template
+    
     context = {
         'form': form,
         'product': product,
-        'product_type': product_type  # Pass the product type to handle specific cases in the template
+        'product_type': product_type
     }
     return render(request, 'products/edit_products.html', context)
 
@@ -221,11 +214,9 @@ def delete_product(request, product_id):
         product = get_object_or_404(Kit, product_id=product_id)
     
     if product:
-        # Delete the product
         product.delete()
         messages.success(request, 'Product successfully deleted!')
     else:
-        messages.error(request, 'Product not found!')
+        messages.error(request, 'Product not found!')    
     
-    # Redirect to the products page
     return redirect('products')

@@ -61,38 +61,24 @@ def checkout(request):
             # Loop through the items in the shopping bag
             for item_id, item_data in bag.items():
                 try:
-                    # Dynamically check each product model (Tea, Equipment, Kit)
                     product = None
                     for model in (Tea, Equipment, Kit):
                         try:
                             product = model.objects.get(product_id=item_id)
-                            break  # Stop once we find the product
+                            break
                         except model.DoesNotExist:
                             continue
 
                     if product:
-                        if isinstance(item_data, int):
-                            # If it's a simple quantity (no size differentiation)
-                            order_line_item = OrderLineItem(
-                                order=order,
-                                tea=product if isinstance(product, Tea) else None,
-                                equipment=product if isinstance(product, Equipment) else None,
-                                kit=product if isinstance(product, Kit) else None,
-                                quantity=item_data,
-                            )
-                            order_line_item.save()
-                        else:
-                            # If the item has sizes, handle accordingly
-                            for size, quantity in item_data['items_by_size'].items():
-                                order_line_item = OrderLineItem(
-                                    order=order,
-                                    tea=product if isinstance(product, Tea) else None,
-                                    equipment=product if isinstance(product, Equipment) else None,
-                                    kit=product if isinstance(product, Kit) else None,
-                                    quantity=quantity,
-                                    product_size=size,
-                                )
-                                order_line_item.save()
+                        # Treat all items as simple quantities
+                        order_line_item = OrderLineItem(
+                            order=order,
+                            tea=product if isinstance(product, Tea) else None,
+                            equipment=product if isinstance(product, Equipment) else None,
+                            kit=product if isinstance(product, Kit) else None,
+                            quantity=item_data,
+                        )
+                        order_line_item.save()
                     else:
                         raise ValueError("Product not found")
 
@@ -114,15 +100,14 @@ def checkout(request):
             messages.error(request, 'There was an error with your form. Please double check your information.')
 
     else:
-        # If the request is GET, show the checkout page
         bag = request.session.get('bag', {})
         if not bag:
             messages.error(request, "There's nothing in your bag at the moment")
             return redirect(reverse('products'))
 
-        current_bag = bag_contents(request)  # You can use your existing bag_contents function if you want
+        current_bag = bag_contents(request)
         total = current_bag['grand_total']
-        stripe_total = round(total * 100)  # Stripe amount must be in cents
+        stripe_total = round(total * 100)
         stripe.api_key = stripe_secret_key
         intent = stripe.PaymentIntent.create(
             amount=stripe_total,
@@ -171,7 +156,6 @@ def checkout_success(request, order_number):
 
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)
-        # Attach the user's profile to the order
         order.user_profile = profile
         order.save()
 
