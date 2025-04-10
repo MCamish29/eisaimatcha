@@ -6,6 +6,12 @@ body {
     font-family: 'Quicksand', sans-serif !important;
     height: calc(98vh - 164px);    
 }
+
+.nav-row{
+    width: 99%;
+}
+
+
 .footer{
     background-color: #727272 !important;
 }
