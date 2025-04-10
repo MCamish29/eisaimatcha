@@ -5,10 +5,15 @@ from products.models import Tea, Equipment, Kit
 
 # Create your views here.
 def view_bag(request):
+    """
+    Render the shopping bag page.
+    """
     return render(request, 'bag/bag.html')
 
-def add_to_bag(request, item_id):
-  
+def add_to_bag(request, item_id):    
+    """
+    Add a quantity of a specific product to the shopping bag.
+    """
     product = None
     
     try:
@@ -39,7 +44,9 @@ def add_to_bag(request, item_id):
     return redirect(redirect_url)
 
 def adjust_bag(request, item_id):
-
+    """
+    Adjust the quantity of a specific product in the shopping bag.
+    """
     product = None
     
     try:
@@ -68,7 +75,9 @@ def adjust_bag(request, item_id):
     return redirect(reverse('view_bag'))
 
 def remove_from_bag(request, item_id):
-
+    """
+    Remove a specific product from the shopping bag.
+    """
     product = None
     
     try:

@@ -16,6 +16,11 @@ import json
 
 @require_POST
 def cache_checkout_data(request):
+
+    """
+    Cache checkout data in Stripe before final payment submission.
+    """
+
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
         stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -31,6 +36,11 @@ def cache_checkout_data(request):
         return HttpResponse(content=e, status=400)
 
 def checkout(request):
+
+    """
+    Process the checkout: validate order form, create order, and handle Stripe payment.
+    """
+
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
@@ -148,9 +158,11 @@ def checkout(request):
 
 
 def checkout_success(request, order_number):
+
     """
-    Handle successful checkouts
+    Handle post-checkout success logic, update user profile, and show confirmation.
     """
+ 
     save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
 

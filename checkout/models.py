@@ -12,6 +12,10 @@ from profiles.models import UserProfile
 # Create your models here.
 
 class Order(models.Model):
+    """
+    Model representing a customer's order.
+    Stores delivery and contact information, totals, and the original bag data.
+    """
 
     order_number = models.CharField(max_length=32, null=False, editable=False)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
@@ -32,7 +36,6 @@ class Order(models.Model):
     stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')
 
     def _generate_order_number(self):
-
         return uuid.uuid4().hex.upper()
     
     def update_total(self):
@@ -55,6 +58,9 @@ class Order(models.Model):
         return self.order_number
 
 class OrderLineItem(models.Model):
+    """
+    Individual item within an order.
+    """
     order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='lineitems')
     tea = models.ForeignKey(Tea, null=True, blank=True, on_delete=models.CASCADE)
     equipment = models.ForeignKey(Equipment, null=True, blank=True, on_delete=models.CASCADE)

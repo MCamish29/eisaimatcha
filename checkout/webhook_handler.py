@@ -11,7 +11,9 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 class StripeWH_Handler:
-    """Handle Stripe Webhooks"""
+    """
+    Handle Stripe Webhooks
+    """
 
     def __init__(self, request):
         self.request = request

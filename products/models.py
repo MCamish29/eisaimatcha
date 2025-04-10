@@ -4,6 +4,10 @@ from django.db import models
 # Create your models here.
 
 class Category(models.Model):
+    """
+    Model representing categories (e.g. Tea, Kit, Equipment)
+    """
+
     class Meta:
         verbose_name_plural = 'Categories'
     category_id = models.AutoField(primary_key=True)
@@ -19,6 +23,9 @@ class Category(models.Model):
 
 
 class Country(models.Model):
+    """
+    Model representing country of origin (e.g. Japan, China)
+    """
     class Meta:
         verbose_name_plural = 'Countries'
     country_id = models.AutoField(primary_key=True)
@@ -31,6 +38,10 @@ class Country(models.Model):
 
 
 class Tea(models.Model):
+    """
+    Model representing tea products
+    Tea has unique fields of blend, weight and country of origin
+    """
     class Meta:
         verbose_name_plural = 'Tea'
         db_table = 'products_tea'
@@ -54,6 +65,10 @@ class Tea(models.Model):
 
 
 class Equipment(models.Model):
+    """
+    Model representing equipment products
+    Equipment has unique fields of country of origin
+    """
     class Meta:
         verbose_name_plural = 'Equipment'
     
@@ -74,6 +89,10 @@ class Equipment(models.Model):
 
 
 class Kit(models.Model):
+    """
+    Model representing kit products
+    kit does not have unique fields
+    """
     # Using UUID as a unique identifier across all models
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)    
     internal_name = models.CharField(max_length=250)

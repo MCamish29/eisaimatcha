@@ -2,6 +2,9 @@ from django import forms
 from .models import Tea, Equipment, Kit, Category, Country
 
 class ProductForm(forms.Form):
+    """
+    Edit product form
+    """
     internal_name = forms.CharField(max_length=250)
     product_name = forms.CharField(max_length=250, required=False)
     description = forms.CharField(widget=forms.Textarea)

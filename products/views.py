@@ -6,7 +6,9 @@ from .forms import ProductForm
 
 
 def all_products(request):
-    """A view to return all products page with category and search filters"""
+    """
+    A view to return all products page with category and search filters
+    """
     
     category_filter = request.GET.get('category', None)
     # Fetch all products
@@ -56,7 +58,9 @@ def all_products(request):
 
 
 def add_product(request):
-    """ Add a product to the store """
+    """
+    A view to return add a product to the store as a superuser
+    """
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
@@ -108,7 +112,9 @@ def add_product(request):
     return render(request, template, context)
 
 def edit_product(request, product_id):
-    """A view to edit a product."""
+    """
+    A view to edit a product and update on the store as a superuser
+    """
     
     # Check if the user is a superuser
     if not request.user.is_superuser:
@@ -196,7 +202,9 @@ def edit_product(request, product_id):
     return render(request, 'products/edit_products.html', context)
 
 def delete_product(request, product_id):
-    """A view to delete a product."""
+    """
+    A view to delete a product from the store as a superuser
+    """
     
     # Check if the user is a superuser
     if not request.user.is_superuser:
