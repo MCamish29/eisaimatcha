@@ -1,0 +1,5 @@
+User-agent: *
+Disallow:/accounts/
+Disallow:/bag/
+Disallow:/checkout/
+Sitemap: https://eisai-matcha-05ff09384237.herokuapp.com/sitemap.xml
