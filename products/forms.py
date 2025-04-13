@@ -1,6 +1,7 @@
 from django import forms
 from .models import Tea, Equipment, Kit, Category, Country
 
+
 class ProductForm(forms.Form):
     """
     Edit product form
@@ -17,12 +18,15 @@ class ProductForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
-        # Set the friendly names for categories using category_id and get_friendly_name
+        """
+        Set the friendly names for categories
+        using category_id and get_friendly_name
+        """
         categories = Category.objects.all()
-        friendly_names = [(c.category_id, c.get_friendly_name()) for c in categories]
+        friendly_names = [
+            (c.category_id, c.get_friendly_name())
+            for c in categories]
         self.fields['category'].choices = friendly_names
-        
         # Add a class to each field for styling purposes
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = ''

@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 
+
 class StripeWH_Handler:
     """
     Handle Stripe Webhooks
@@ -27,13 +28,13 @@ class StripeWH_Handler:
         body = render_to_string(
             'checkout/confirmation_emails/confirmation_email_body.txt',
             {'order': order, 'contact_email': settings.DEFAULT_FROM_EMAIL})
-        
+
         send_mail(
             subject,
             body,
             settings.DEFAULT_FROM_EMAIL,
             [cust_email]
-        )        
+        )
 
     def handle_event(self, event):
         """
@@ -49,11 +50,13 @@ class StripeWH_Handler:
         """
         Handle the payment_intent.succeeded webhook from Stripe.
         """
-        print(f"Handling payment intent succeeded for event: {event['type']}")  # Debugging
+        print(
+            f"Handling payment intent succeeded for event: {event['type']}"
+            )  # Debugging
 
         intent = event.data.object
         pid = intent.id
-        bag = intent.metadata.get("bag", "{}")  # Default to empty JSON if missing
+        bag = intent.metadata.get("bag", "{}")  # Default empty JSON if missing
         save_info = intent.metadata.get("save_info", False)
 
         # Get the Charge object if available
@@ -68,11 +71,18 @@ class StripeWH_Handler:
                 )
 
         # Extract billing and shipping details
-        billing_details = stripe_charge.billing_details if stripe_charge else intent.billing_details
+        billing_details = (
+            stripe_charge.billing_details
+            if stripe_charge
+            else intent.billing_details)
         shipping_details = intent.shipping
 
         # Get grand total safely
-        grand_total = round(stripe_charge.amount / 100, 2) if stripe_charge else round(intent.amount / 100, 2)
+        grand_total = (
+            round(stripe_charge.amount / 100, 2)
+            if stripe_charge
+            else round(intent.amount / 100, 2)
+        )
 
         # Clean shipping details
         if shipping_details and shipping_details.address:
@@ -80,15 +90,19 @@ class StripeWH_Handler:
                 if value == "":
                     shipping_details.address[field] = None
 
-         # Update profile information if save_info was checked
+        # Update profile information if save_info was checked
         profile = None
         username = intent.metadata.username
         if username != 'AnonymousUser':
             profile = UserProfile.objects.get(user__username=username)
             if save_info:
-                profile.default_phone_number = shipping_details.phone                
-                profile.default_street_address1 = shipping_details.address.line1
-                profile.default_street_address2 = shipping_details.address.line2
+                profile.default_phone_number = shipping_details.phone
+                profile.default_street_address1 = (
+                    shipping_details.address.line1
+                    )
+                profile.default_street_address2 = (
+                    shipping_details.address.line2
+                    )
                 profile.default_town_or_city = shipping_details.address.city
                 profile.default_county = shipping_details.address.state
                 profile.default_country = shipping_details.address.country
@@ -123,7 +137,10 @@ class StripeWH_Handler:
         if order_exists:
             self._send_confirmation_email(order)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Verified order already in database',
+                content=(
+                    f'Webhook received: {event["type"]} | '
+                    f'SUCCESS: Verified order already in database'
+                ),
                 status=200
             )
 
@@ -148,7 +165,7 @@ class StripeWH_Handler:
             # Add order line items
             for item_id, item_data in json.loads(bag).items():
                 product = None
-                for model in (Tea, Equipment, Kit):  # Try to find the product in any model
+                for model in (Tea, Equipment, Kit):
                     try:
                         product = model.objects.get(id=item_id)
                         break
@@ -159,7 +176,10 @@ class StripeWH_Handler:
                     order_line_item = OrderLineItem(
                         order=order,
                         tea=product if isinstance(product, Tea) else None,
-                        equipment=product if isinstance(product, Equipment) else None,
+                        equipment=(
+                            product
+                            if isinstance(product, Equipment)
+                            else None),
                         kit=product if isinstance(product, Kit) else None,
                         quantity=item_data,
                     )
@@ -175,7 +195,9 @@ class StripeWH_Handler:
                 status=500)
         self._send_confirmation_email(order)
         return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Order created',
+            content=(
+                f'Webhook received: {event["type"]} |'
+                f'SUCCESS: Order created'),
             status=200
         )
 
@@ -183,7 +205,7 @@ class StripeWH_Handler:
         """
         Handle the payment_intent.payment_failed webhook from Stripe
         """
-        print(f"Handling payment intent failed for event: {event['type']}")  # Debugging
+        print(f"Handling payment intent failed for event: {event['type']}")
         return HttpResponse(
             content=f'Webhook received: {event["type"]}',
             status=200

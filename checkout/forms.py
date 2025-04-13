@@ -4,15 +4,15 @@ from .models import Order
 
 class OrderForm(forms.ModelForm):
     """
-    Order form to collect and validate order details during checkout    
+    Order form to collect and validate order details during checkout
     """
     class Meta:
         model = Order
-        fields = ('full_name', 'email', 'phone_number', 
-                  'street_address1','street_address2', 
-                  'town_or_city', 'postcode', 'county', 
+        fields = ('full_name', 'email', 'phone_number',
+                  'street_address1', 'street_address2',
+                  'town_or_city', 'postcode', 'county',
                   'country',)
-        
+
     def __init__(self, *args, **kwargs):
         """
         Add placeholders and classes, remove auto-generated

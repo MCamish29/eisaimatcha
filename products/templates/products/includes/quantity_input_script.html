@@ -1,38 +1,34 @@
-<script type="text/javascript">
-    // Disable +/- buttons outside 1-99 range
-    function handleEnableDisable(itemId) {
-        var currentValue = parseInt($(`#id_qty_${itemId}`).val());
-        var minusDisabled = currentValue < 2;
-        var plusDisabled = currentValue > 98;
-        $(`#decrement-qty_${itemId}`).prop('disabled', minusDisabled);
-        $(`#increment-qty_${itemId}`).prop('disabled', plusDisabled);
-    }
- 
-    // Ensure proper enabling/disabling of all inputs on page load
-    var allQtyInputs = $('.qty_input');
-    for (var i = 0; i < allQtyInputs.length; i++) {
-        var itemId = $(allQtyInputs[i]).data('item_id');
-        handleEnableDisable(itemId);
-    }
- 
-    // Increment quantity with event delegation
-    $(document).on('click', '.increment-qty', function(e) {
-       e.preventDefault();  // Prevent default form submission behavior
-       var itemId = $(this).data('item_id');
-       var closestInput = $(this).closest('.input-group').find('.qty_input');
-       var currentValue = parseInt(closestInput.val()) || 1;
-       closestInput.val(currentValue + 1);  // Increment by 1
-       handleEnableDisable(itemId);  // Re-enable/disable buttons based on the new value
-    });
+<script>
+
+    /* jshint esversion: 6 */
     
-    // Decrement quantity with event delegation
-    $(document).on('click', '.decrement-qty', function(e) {
-       e.preventDefault();  // Prevent default form submission behavior
-       var itemId = $(this).data('item_id');
-       var closestInput = $(this).closest('.input-group').find('.qty_input');
-       var currentValue = parseInt(closestInput.val()) || 1;
-       closestInput.val(Math.max(1, currentValue - 1));  // Decrement by 1 but not below 1
-       handleEnableDisable(itemId);  // Re-enable/disable buttons based on the new value
+    document.addEventListener('DOMContentLoaded', function () {
+        // Increase the quantity
+        document.querySelectorAll('.increment-qty').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const itemId = this.getAttribute('data-item_id');
+                const inputField = document.getElementById(`id_qty_${itemId}`);
+                let currentQuantity = parseInt(inputField.value);
+                
+                if (currentQuantity < 99) {
+                    inputField.value = currentQuantity + 1;
+                }
+            });
+        });
+
+        // Decrease the quantity
+        document.querySelectorAll('.decrement-qty').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const itemId = this.getAttribute('data-item_id');
+                const inputField = document.getElementById(`id_qty_${itemId}`);
+                let currentQuantity = parseInt(inputField.value);
+
+                if (currentQuantity > 1) {
+                    inputField.value = currentQuantity - 1;
+                }
+            });
+        });
     });
- </script>
- 
+</script>

@@ -14,6 +14,7 @@ body {
 
 .footer{
     background-color: #727272 !important;
+    height: auto;
 }
 /* from Bulma */
 .icon {
@@ -74,14 +75,13 @@ body {
     width: 25%;
     color: #727272 !important;
     background-color: white;
-    transition: all 0.3s ease; /* Smooth transition */
+    transition: all 0.3s ease; 
 }
 .subscribe-button:hover {
     background: #222;
-    font-style: white;
+    color: white;
 }
-#mc_embed_signup{
-    false;
+#mc_embed_signup{    
     clear:left; 
     font-family: 'Quicksand', sans-serif !important;
 }

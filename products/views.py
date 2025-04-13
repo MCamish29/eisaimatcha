@@ -9,29 +9,31 @@ def all_products(request):
     """
     A view to return all products page with category and search filters
     """
-    
+
     category_filter = request.GET.get('category', None)
     # Fetch all products
     teas = Tea.objects.all()
     equipment = Equipment.objects.all()
     kits = Kit.objects.all()
     search = None
-    
-    
+
     # Search functionality
     if request.GET.get('q'):
         search = request.GET['q']
         if not search:
             messages.error(request, "No search criteria entered!")
             return redirect(reverse('products'))
-        
+
         # Perform search in category names, product names, and descriptions
-        queries = Q(category__category__icontains=search) | Q(product_name__icontains=search) | Q(description__icontains=search)
+        queries = (
+            Q(category__category__icontains=search) |
+            Q(product_name__icontains=search) |
+            Q(description__icontains=search))
         teas = teas.filter(queries)
         equipment = equipment.filter(queries)
         kits = kits.filter(queries)
-    
-    # Apply category filter 
+
+    # Apply category filter
     if category_filter:
         if category_filter.lower() == 'tea':
             teas = teas.all()
@@ -48,12 +50,12 @@ def all_products(request):
 
     # Combine all filtered products into one list
     all_products = list(teas) + list(equipment) + list(kits)
-    
+
     context = {
         'all_products': all_products,
         'search_term': search,
     }
-    
+
     return render(request, 'products/products.html', context)
 
 
@@ -82,25 +84,34 @@ def add_product(request):
                     **base_fields,
                     blend=form.cleaned_data['blend'],
                     weight=form.cleaned_data['weight'],
-                    country_of_origin=form.cleaned_data.get('country_of_origin')
+                    country_of_origin=form.cleaned_data.get(
+                        'country_of_origin'
+                        )
                 )
                 messages.success(request, 'Successfully added tea product!')
 
             elif category_name == 'equipment':
                 Equipment.objects.create(
                     **base_fields,
-                    country_of_origin=form.cleaned_data.get('country_of_origin')
+                    country_of_origin=form.cleaned_data.get(
+                        'country_of_origin'
+                        )
                 )
-                messages.success(request, 'Successfully added equipment product!')
+                messages.success(
+                    request, 'Successfully added equipment product!'
+                    )
 
             elif category_name == 'kit':
-                base_fields.pop('country_of_origin', None)  
+                base_fields.pop('country_of_origin', None)
                 Kit.objects.create(**base_fields)
                 messages.success(request, 'Successfully added kit product!')
 
             return redirect(reverse('add_product'))
         else:
-            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
+            messages.error(
+                request,
+                'Failed to add product. Please ensure the form is valid.'
+                )
     else:
         form = ProductForm()
 
@@ -111,16 +122,17 @@ def add_product(request):
 
     return render(request, template, context)
 
+
 def edit_product(request, product_id):
     """
     A view to edit a product and update on the store as a superuser
     """
-    
+
     # Check if the user is a superuser
     if not request.user.is_superuser:
         messages.error(request, "You are not authorized to edit this product.")
         return redirect('products')
-    
+
     # Try to find the product in the different models
     product = None
     product_type = None
@@ -133,7 +145,7 @@ def edit_product(request, product_id):
     elif Kit.objects.filter(product_id=product_id).exists():
         product = get_object_or_404(Kit, product_id=product_id)
         product_type = 'Kit'
-    
+
     # If no product was found in any model, redirect with an error message
     if not product:
         messages.error(request, "Product not found.")
@@ -147,20 +159,21 @@ def edit_product(request, product_id):
             product.product_name = form.cleaned_data['product_name']
             product.description = form.cleaned_data['description']
 
-            
             if product_type == 'Tea':
                 product.blend = form.cleaned_data['blend']
-                product.weight = form.cleaned_data['weight'] 
-            elif product_type == 'Equipment':                
+                product.weight = form.cleaned_data['weight']
+            elif product_type == 'Equipment':
                 pass
             elif product_type == 'Kit':
                 pass
 
             product.category = form.cleaned_data['category']
-                        
+
             if product_type != 'Kit':
-                product.country_of_origin = form.cleaned_data['country_of_origin']
-            
+                product.country_of_origin = form.cleaned_data[
+                    'country_of_origin'
+                    ]
+
             product.price = form.cleaned_data['price']
 
             # If a new image is uploaded, update the image field
@@ -169,13 +182,16 @@ def edit_product(request, product_id):
             # If no new image is uploaded, keep the existing image
             else:
                 product.image = product.image
-            
+
             product.save()
             messages.success(request, 'Product successfully updated!')
             return redirect('products')
         else:
             print(form.errors)
-            messages.error(request, 'Failed to update product. Please check the form for errors.')
+            messages.error(
+                request,
+                'Failed to update product. Please check the form for errors.'
+                )
     else:
         # Load the form with the current product data
         initial_data = {
@@ -185,15 +201,15 @@ def edit_product(request, product_id):
             'blend': product.blend if product_type == 'Tea' else '',
             'weight': product.weight if product_type == 'Tea' else '',
             'category': product.category,
-            'image': product.image, 
+            'image': product.image,
             'price': product.price,
-        }        
-        
+        }
+
         if product_type != 'Kit':
             initial_data['country_of_origin'] = product.country_of_origin
-        
+
         form = ProductForm(initial=initial_data)
-    
+
     context = {
         'form': form,
         'product': product,
@@ -201,16 +217,20 @@ def edit_product(request, product_id):
     }
     return render(request, 'products/edit_products.html', context)
 
+
 def delete_product(request, product_id):
     """
     A view to delete a product from the store as a superuser
     """
-    
+
     # Check if the user is a superuser
     if not request.user.is_superuser:
-        messages.error(request, "You are not authorized to delete this product.")
+        messages.error(
+            request,
+            "You are not authorized to delete this product."
+            )
         return redirect('products')
-    
+
     # Try to find the product in the different models
     product = None
     if Tea.objects.filter(product_id=product_id).exists():
@@ -219,11 +239,11 @@ def delete_product(request, product_id):
         product = get_object_or_404(Equipment, product_id=product_id)
     elif Kit.objects.filter(product_id=product_id).exists():
         product = get_object_or_404(Kit, product_id=product_id)
-    
+
     if product:
         product.delete()
         messages.success(request, 'Product successfully deleted!')
     else:
-        messages.error(request, 'Product not found!')    
-    
+        messages.error(request, 'Product not found!')
+
     return redirect('products')

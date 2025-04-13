@@ -3,6 +3,7 @@ from .models import Category, Country, Tea, Equipment, Kit
 
 # Register your models here.
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'category_id',
@@ -33,6 +34,7 @@ class TeaAdmin(admin.ModelAdmin):
         'updated',
     )
 
+
 class EquipmentAdmin(admin.ModelAdmin):
     list_display = (
         'product_id',
@@ -55,6 +57,7 @@ class KitAdmin(admin.ModelAdmin):
         'created',
         'updated',
     )
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Country, CountryAdmin)

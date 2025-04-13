@@ -6,6 +6,9 @@
     https://stripe.com/docs/stripe-js
 */
 
+/* jshint esversion: 6 */
+/* jshint jquery: true, browser: true */
+
 var stripePublicKey = $('#id_stripe_public_key').text().slice(1, -1);
 var clientSecret = $('#id_client_secret').text().slice(1, -1);
 var stripe = Stripe(stripePublicKey);
@@ -51,7 +54,7 @@ form.addEventListener('submit', function(ev) {
     ev.preventDefault();
     card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
-    var saveInfo = Boolean($('#id-save-info').attr('checked'));
+    var saveInfo = $('#id-save-info').prop('checked');
     // From using {% csrf_token %} in the form
     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
     var postData = {
@@ -110,5 +113,5 @@ form.addEventListener('submit', function(ev) {
     }).fail(function () {
         // just reload the page, the error will be in django messages
         location.reload();
-    })
+    });
 });

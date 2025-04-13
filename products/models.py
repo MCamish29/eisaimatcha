@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Category(models.Model):
     """
     Model representing categories (e.g. Tea, Kit, Equipment)
@@ -14,11 +15,13 @@ class Category(models.Model):
     category = models.CharField(max_length=50)
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
-    
+
     def __str__(self):
-        return self.category 
-    
+
+        return self.category
+
     def get_friendly_name(self):
+
         return self.category
 
 
@@ -32,7 +35,7 @@ class Country(models.Model):
     country = models.CharField(max_length=75)
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
-    
+
     def __str__(self):
         return self.country
 
@@ -45,9 +48,12 @@ class Tea(models.Model):
     class Meta:
         verbose_name_plural = 'Tea'
         db_table = 'products_tea'
-    
+
     # Using UUID as a unique identifier across all models
-    product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)    
+    product_id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False)
     internal_name = models.CharField(max_length=250)
     product_name = models.CharField(max_length=250, null=True, blank=True)
     description = models.TextField()
@@ -71,9 +77,12 @@ class Equipment(models.Model):
     """
     class Meta:
         verbose_name_plural = 'Equipment'
-    
+
     # Using UUID as a unique identifier across all models
-    product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)    
+    product_id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False)
     internal_name = models.CharField(max_length=250)
     product_name = models.CharField(max_length=250, null=True, blank=True)
     description = models.TextField()
@@ -94,7 +103,10 @@ class Kit(models.Model):
     kit does not have unique fields
     """
     # Using UUID as a unique identifier across all models
-    product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)    
+    product_id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False)
     internal_name = models.CharField(max_length=250)
     product_name = models.CharField(max_length=250, null=True, blank=True)
     description = models.TextField()

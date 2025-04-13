@@ -40,3 +40,6 @@ select option[value=""] {
     color: #727272 !important;
 }
 
+.checkbox-save-info{
+  display: none;
+}
