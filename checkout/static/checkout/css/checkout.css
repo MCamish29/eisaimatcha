@@ -39,7 +39,3 @@ select option[value=""] {
     font-weight: bold;
     color: #727272 !important;
 }
-
-.checkbox-save-info{
-  display: none;
-}
