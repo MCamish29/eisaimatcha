@@ -10,7 +10,7 @@ class ProductForm(forms.Form):
     product_name = forms.CharField(max_length=250, required=False)
     description = forms.CharField(widget=forms.Textarea)
     blend = forms.CharField(max_length=250, required=False)
-    weight = forms.IntegerField(required=False)
+    weight = forms.IntegerField(required=False, min_value=1)
     category = forms.ModelChoiceField(queryset=Category.objects.all())
     country_of_origin = forms.ModelChoiceField(queryset=Country.objects.all())
     image = forms.ImageField(required=False)
