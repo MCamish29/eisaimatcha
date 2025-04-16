@@ -45,7 +45,13 @@ body {
     min-width: 100%;
 }
 
-
+.bag-button:hover,
+.bag-button:active,
+.bag-button:focus {
+    background: #222;
+    color: white;
+    transition: all 0.3s ease;
+}
 
 .btn-main {
     background: #727272;
