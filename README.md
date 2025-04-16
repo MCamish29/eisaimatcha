@@ -26,22 +26,22 @@ _To open links in a new tab, hold CTRL + Click_
 # WireFrame
 
 #### Home page
-![Homepage](static/images/eisai_WF_index.png)
+![Homepage](static/images/eisai_wf_index.png)
 
 #### Products page
-![Productspage](static/images/eisai_WF_products.png)
+![Productspage](static/images/eisai_wf_products.png)
 
 #### Add product page
-![Addproductpage](static/images/eisai_WF_add.png)
+![Addproductpage](static/images/eisai_wf_add.png)
 
 #### Edit product page
-![Editproductpage](static/images/eisai_WF_edit.png)
+![Editproductpage](static/images/eisai_wf_edit.png)
 
 #### Bag page
-![Bagpage](static/images/eisai_WF_bag.png)
+![Bagpage](static/images/eisai_wf_bag.png)
 
 #### Checkout page
-![Checkoutpage](static/images/eisai_WF_checkout.png)
+![Checkoutpage](static/images/eisai_wf_checkout.png)
 
 # Design
 
@@ -186,7 +186,7 @@ Packages must be added to requirements.txt `pip3 freeze --local > requirements.t
 
 ## Entity-Relationship Diagram (ERD)
 
-![ERD](static/images/Eisai_Matcha_ERD.jpeg)
+![ERD](static/images/eisai_matcha_erd.jpeg)
 
 
 

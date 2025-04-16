@@ -75,7 +75,11 @@ def add_product(request):
                 'product_name': form.cleaned_data['product_name'],
                 'description': form.cleaned_data['description'],
                 'category': category,
-                'image': form.cleaned_data['image'],
+                'image': (
+                    form.cleaned_data['image']
+                    if 'image' in request.FILES
+                    else 'image_error.png'
+                ),
                 'price': form.cleaned_data['price'],
             }
 
@@ -179,9 +183,9 @@ def edit_product(request, product_id):
             # If a new image is uploaded, update the image field
             if 'image' in request.FILES:
                 product.image = form.cleaned_data['image']
-            # If no new image is uploaded, keep the existing image
+            # If no new image is uploaded
             else:
-                product.image = product.image
+                product.image = 'media/image_error.png'
 
             product.save()
             messages.success(request, 'Product successfully updated!')
