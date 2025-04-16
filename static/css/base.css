@@ -5,6 +5,7 @@ html {
 body {
     font-family: 'Quicksand', sans-serif !important;
     height: calc(98vh - 164px);    
+    padding-top: 50px;
 }
 
 .nav-row{
@@ -14,7 +15,7 @@ body {
 
 .footer{
     background-color: #727272 !important;
-    height: auto;
+    margin-top: 100px;
 }
 /* from Bulma */
 .icon {
@@ -37,6 +38,15 @@ body {
     color: white;
     min-width: 100%;
 }
+
+.bag-button{
+    background: #727272;
+    color: white;
+    min-width: 100%;
+}
+
+
+
 .btn-main {
     background: #727272;
     color: white;
@@ -107,7 +117,7 @@ body {
         z-index: 1030;
     }
     .header-container{
-        margin-top: 100px;
+        margin-top: 120px;
     }
 }
 /* Small screens (phones, etc.) */
@@ -117,7 +127,30 @@ body {
         font-size: 250%;
     }
     .header-container{
-        margin-top: 170px;
+        margin-top: 160px;
         margin-left: 10px;
+    }
+    .footer{
+        margin-top: 75px;
+    }
+    .bag-button{
+        font-size: smaller;
+    }
+    
+}
+@media (max-width: 576px) {
+    .table td, .table th {
+        font-size: 12px; /* Smaller text on mobile */
+    }
+
+    .table img {
+        max-width: 80px; /* Limit image size */
+    }
+
+    .grand-total {
+        font-size: 16px;
+    }
+    .table-pid{
+        display: none;
     }
 }
